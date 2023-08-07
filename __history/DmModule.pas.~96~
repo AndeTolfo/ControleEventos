@@ -1,0 +1,234 @@
+unit DmModule;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,IniFiles, FireDAC.Phys.IBBase, FireDAC.Comp.UI;
+
+type
+  TDM = class(TDataModule)
+    conexao: TFDConnection;
+    QueryAreas: TFDQuery;
+    QueryAreasCOD_AREA: TIntegerField;
+    QueryAreasNOME_AREA: TStringField;
+    QueryEventos: TFDQuery;
+    QueryParticipantes: TFDQuery;
+    QueryPalestrantes: TFDQuery;
+    QueryEventosCOD_EVENTO: TIntegerField;
+    QueryEventosTITULO_EV: TStringField;
+    QueryEventosDESCRICAO_EV: TStringField;
+    QueryEventosDATA_EV: TDateField;
+    QueryEventosLOCAL_EV: TStringField;
+    QueryEventosCOD_AREA: TIntegerField;
+    QueryEventosVALOR_INSCRICAO_EV: TFMTBCDField;
+    QueryParticipantesCOD_PART: TIntegerField;
+    QueryParticipantesNOME_PART: TStringField;
+    QueryParticipantesEMAIL_PART: TStringField;
+    QueryParticipantesTELEFONE_PART: TStringField;
+    QueryParticipantesAREA_INTERESSE: TStringField;
+    QueryPalestrantesCOD_PAL: TIntegerField;
+    QueryPalestrantesNOME_PAL: TStringField;
+    QueryPalestrantesCOD_AREA: TIntegerField;
+    dsAreas: TDataSource;
+    dsEventos: TDataSource;
+    dsParticipantes: TDataSource;
+    dsPalestrantes: TDataSource;
+    WaitCursor: TFDGUIxWaitCursor;
+    FBDriverLink: TFDPhysFBDriverLink;
+    QueryInscricoes: TFDQuery;
+    dsInscricoes: TDataSource;
+    QueryFinanceiro: TFDQuery;
+    dsFinanceiro: TDataSource;
+    dsPagamentos: TDataSource;
+    QueryPagamentos: TFDQuery;
+    QueryParcelas: TFDQuery;
+    QueryFinanceiroCOD_CONTA: TIntegerField;
+    QueryFinanceiroCOD_EVENTO: TIntegerField;
+    QueryFinanceiroDESCRICAO_CONTA: TStringField;
+    QueryFinanceiroTIPO_CONTA: TStringField;
+    QueryFinanceiroDATA_CONTA: TDateField;
+    QueryFinanceiroNNOTA_CONTA: TStringField;
+    QueryFinanceiroVALOR_CONTA: TFMTBCDField;
+    QueryFinanceiroQTDPARCELAS_CONTA: TIntegerField;
+    QueryFinanceiroCOD_FAVORECIDO: TIntegerField;
+    QueryFinanceiroTIPOFAVORECIDO: TStringField;
+    QueryFinanceiroSITUACAO_CONTA: TStringField;
+    QueryFormasPag: TFDQuery;
+    dsFormasPag: TDataSource;
+    QueryFormasPagCOD_FPG: TIntegerField;
+    QueryFormasPagNOME_FPG: TStringField;
+    QueryFormasPagDESCRICAO_FPG: TStringField;
+    QueryPagamentosCOD_PAGAMENTO: TIntegerField;
+    QueryPagamentosCOD_PARCELA: TIntegerField;
+    QueryPagamentosCOD_FPG: TIntegerField;
+    QueryPagamentosVALOR_PAGAMENTO: TFMTBCDField;
+    QueryPagamentosDATA_HORA: TSQLTimeStampField;
+    QueryPagamentosEXTORNADO: TStringField;
+    QueryParcelasCOD_PARCELA: TIntegerField;
+    QueryParcelasCOD_CONTA_PARCELA: TIntegerField;
+    QueryParcelasNUM_PARCELA: TIntegerField;
+    QueryParcelasDATA_VENC_PARCELA: TDateField;
+    QueryParcelasVALOR_PARCELA: TFMTBCDField;
+    QueryParcelasSITUACAO_PARCELA: TStringField;
+    QueryParcelasVALOR_PAGO_PARCELA: TFMTBCDField;
+    QueryParcelasCOD_EVENTO: TIntegerField;
+    QueryParcelasVALOR_RESTANTE: TFMTBCDField;
+    QueryFavorecidos: TFDQuery;
+    QueryFavorecidosCOD_FAV: TIntegerField;
+    QueryFavorecidosNOME_FAV: TStringField;
+    dsFavorecidos: TDataSource;
+    QueryCond: TFDQuery;
+    dsCond: TDataSource;
+    QueryCondCOD_COND: TIntegerField;
+    QueryCondNOME_COND: TStringField;
+    QueryCondN_PARCELAS: TIntegerField;
+    QueryCondINTERVALO_PARCELAS: TSmallintField;
+    QueryParcelasTIPO_CONTA: TStringField;
+    ConsultaGen: TFDQuery;
+    QueryHistPag: TFDQuery;
+    dsHistPag: TDataSource;
+    SqlHistPag: TFDQuery;
+    SqlHistPagCOD_PARCELA: TIntegerField;
+    SqlHistPagDESCRICAO_CONTA: TStringField;
+    SqlHistPagCOD_COND: TIntegerField;
+    SqlHistPagNOME_COND: TStringField;
+    SqlHistPagCOD_CONTA_PARCELA: TIntegerField;
+    SqlHistPagNUM_PARCELA: TIntegerField;
+    SqlHistPagTIPO_CONTA: TStringField;
+    SqlHistPagDATA_VENC_PARCELA: TDateField;
+    SqlHistPagVALOR_PARCELA: TFMTBCDField;
+    SqlHistPagSITUACAO_PARCELA: TStringField;
+    SqlHistPagVALOR_PAGO_PARCELA: TFMTBCDField;
+    SqlHistPagVALOR_RESTANTE: TFMTBCDField;
+    SqlHistPagNOME_PART: TStringField;
+    SqlHistPagCOD_EVENTO: TIntegerField;
+    SqlHistPagDATA_CONTA: TDateField;
+    QueryHistPagCOD_PAGAMENTO: TIntegerField;
+    QueryHistPagCOD_FPG: TIntegerField;
+    QueryHistPagDATA_HORA: TSQLTimeStampField;
+    QueryHistPagVALOR_PAGAMENTO: TFMTBCDField;
+    QueryHistPagEXTORNADO: TStringField;
+    QueryHistPagNOME_FPG: TStringField;
+    QueryPresencas: TFDQuery;
+    dsPresencas: TDataSource;
+    QueryParticipantesCPF: TStringField;
+    QueryTeste: TFDQuery;
+    QueryRelEventos: TFDQuery;
+    QueryRelEventosCOD_EVENTO: TIntegerField;
+    QueryRelEventosTITULO_EV: TStringField;
+    QueryRelEventosDATA_EV: TDateField;
+    QueryRelEventosCOD_AREA: TIntegerField;
+    QueryRelEventosVALOR_INSCRICAO_EV: TFMTBCDField;
+    QueryRelEventosNOME_PAL: TStringField;
+    QueryRelEventosNOME_AREA: TStringField;
+    QueryRelMedia: TFDQuery;
+    QueryRelMediaCOD_EVENTO: TIntegerField;
+    QueryRelMediaTITULO_EV: TStringField;
+    QueryRelMediaDATA_EV: TDateField;
+    QueryRelMediaVALOR_INSCRICAO_EV: TFMTBCDField;
+    QueryRelMediaVAGAS: TIntegerField;
+    QueryRelMediaQTD_INSCRITOS: TLargeintField;
+    QueryRelMediaQTD_PRESENTES: TLargeintField;
+    SqlEvPart: TFDQuery;
+    SqlEvPartCOD_EVENTO: TIntegerField;
+    SqlEvPartTITULO_EV: TStringField;
+    SqlEvPartNOME_PART: TStringField;
+    SqlEvPartDATA_EV: TDateField;
+    QueryEventosCOD_PALESTRANTE_EV: TIntegerField;
+    QueryEventosVAGAS_EV: TIntegerField;
+    QueryParcelasFAVORECIDO: TStringField;
+    QueryRelEventosCOD_PALESTRANTE_EV: TIntegerField;
+    QueryRelEventosVAGAS_EV: TIntegerField;
+    QueryParcelasTITULO_EV: TStringField;
+    SqlEvPartPresenca: TStringField;
+    QueryRelBalancete: TFDQuery;
+    QueryRelBalanceteCOD_PAGAMENTO: TIntegerField;
+    QueryRelBalanceteDATA_HORA: TSQLTimeStampField;
+    QueryRelBalanceteVALOR_PAGAMENTO: TFMTBCDField;
+    QueryRelBalanceteCOD_PARCELA: TIntegerField;
+    QueryRelBalanceteNUM_PARCELA: TIntegerField;
+    QueryRelBalanceteDATA_VENC_PARCELA: TDateField;
+    QueryRelBalanceteTIPO_CONTA: TStringField;
+    QueryRelBalanceteCOD_CONTA: TIntegerField;
+    QueryRelBalanceteVALOR_PARCELA: TFMTBCDField;
+    QueryRelBalanceteVALOR_PAGO_PARCELA: TFMTBCDField;
+    QueryRelBalanceteVALOR_CONTA: TFMTBCDField;
+    QueryRelBalanceteSITUACAO_PARCELA: TStringField;
+    QueryRelBalanceteFAVORECIDO: TStringField;
+    QueryRelBalanceteCOD_EVENTO: TIntegerField;
+    QueryRelBalanceteVALOR_RESTANTE: TFMTBCDField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure QueryParcelasSITUACAO_PARCELAGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DM: TDM;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+var
+  LIniFile : TIniFile;
+  LDataBase : string;
+  LUser_Name : string;
+  LPassword : string;
+  LServidor : string;
+  LPorta : integer;
+  LCaminho : string;
+begin
+
+  try
+    Conexao.Connected := False;
+
+    LCaminho := ExtractFileDir(ParamStr(0))+ '/Config.ini';
+
+    LIniFile := TIniFile.Create(LCaminho);
+
+    LDataBase := LIniFile.ReadString('Conexao','Database', LDataBase);
+    LServidor := LIniFile.ReadString('Conexao','Servidor', LServidor);
+    LPorta := LIniFile.ReadInteger('Conexao','Porta', LPorta);
+
+    LUser_Name := 'SUPS';
+    LPassword := 'maps3880';
+
+    Conexao.Params.Values['Database'] := LDataBase;
+    Conexao.Params.Values['User_Name'] := LUser_Name;
+    Conexao.Params.Values['Password'] := LPassword;
+    Conexao.Params.Values['Server'] := LServidor;
+    Conexao.Params.Values['Porta'] := LPorta.ToString;
+
+
+  finally
+    FreeAndNil(LIniFile);
+  end;
+
+end;
+
+procedure TDM.QueryParcelasSITUACAO_PARCELAGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+    if Sender.value = '0' then
+    Text := 'PDNT'
+    else
+    if Sender.value = '1'then
+    Text := 'QTD'
+    else
+    if Sender.Value = '2' then
+    Text := 'CANC';
+end;
+
+end.

@@ -1,0 +1,388 @@
+unit UnitPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.jpeg,
+  Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons, View.Areas, View.Participantes,
+  View.Eventos, View.Palestrantes, Vcl.Imaging.pngimage, View.Pesquisas,
+  DmModule, View.EventosDisp, View.Contas, View.FormasPag, View.Favorecido,
+  View.LancContas, View.CondPag, View.Presencas, View.RelEventos, View.Balancete;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlCentro: TPanel;
+    pnlTopo: TPanel;
+    btnSair: TBitBtn;
+    Menu: TMainMenu;
+    Cadastros1: TMenuItem;
+    btnCadAreas: TMenuItem;
+    btnCadEventos: TMenuItem;
+    btnCadPalestrantes: TMenuItem;
+    btnCadParticipantes: TMenuItem;
+    Listagens1: TMenuItem;
+    btnListagemEv: TMenuItem;
+    btnListagemPal: TMenuItem;
+    btnListagemArea: TMenuItem;
+    btnListagemPart: TMenuItem;
+    btnParticipantes: TBitBtn;
+    btnPalestrantes: TBitBtn;
+    btnEventos: TBitBtn;
+    BitBtn4: TBitBtn;
+    btnInscricao: TSpeedButton;
+    btnPresencas: TBitBtn;
+    btnCadFormas: TMenuItem;
+    btnCadFav: TMenuItem;
+    btnCadCondPag: TMenuItem;
+    btnLancContas: TMenuItem;
+    LanamentodeContas1: TMenuItem;
+    btnListagemFpg: TMenuItem;
+    btnListagemCond: TMenuItem;
+    btnListagemFav: TMenuItem;
+    btnContas: TBitBtn;
+    Relatrios1: TMenuItem;
+    EstatsticasEventos1: TMenuItem;
+    Financeiro1: TMenuItem;
+    Image1: TImage;
+    Balancete1: TMenuItem;
+    procedure btnSairClick(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure btnParticipantesClick(Sender: TObject);
+    procedure btnPalestrantesClick(Sender: TObject);
+    procedure btnEventosClick(Sender: TObject);
+    procedure btnListagemPartClick(Sender: TObject);
+    procedure btnListagemAreaClick(Sender: TObject);
+    procedure btnListagemPalClick(Sender: TObject);
+    procedure btnListagemEvClick(Sender: TObject);
+    procedure btnInscricaoClick(Sender: TObject);
+    procedure btnCadFormasClick(Sender: TObject);
+    procedure btnCadFavClick(Sender: TObject);
+    procedure btnCadCondPagClick(Sender: TObject);
+    procedure LanamentodeContas1Click(Sender: TObject);
+    procedure btnCadAreasClick(Sender: TObject);
+    procedure btnCadEventosClick(Sender: TObject);
+    procedure btnCadPalestrantesClick(Sender: TObject);
+    procedure btnCadParticipantesClick(Sender: TObject);
+    procedure btnListagemCondClick(Sender: TObject);
+    procedure btnListagemFavClick(Sender: TObject);
+    procedure btnListagemFpgClick(Sender: TObject);
+    procedure btnPresencasClick(Sender: TObject);
+    procedure btnContasClick(Sender: TObject);
+    procedure EstatsticasEventos1Click(Sender: TObject);
+    procedure Financeiro1Click(Sender: TObject);
+    procedure Balancete1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmPrincipal.btnContasClick(Sender: TObject);
+begin
+  frmContas := TfrmContas.Create(self);
+    try
+    frmContas.ShowModal;
+    finally
+      frmContas.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.Balancete1Click(Sender: TObject);
+begin
+    frmBalancete := TfrmBalancete.Create(self);
+    try
+    frmBalancete.ShowModal;
+    finally
+      frmBalancete.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.BitBtn4Click(Sender: TObject);
+begin
+    frmAreas := TfrmAreas.Create(self);
+    try
+    frmAreas.ShowModal;
+    finally
+      frmAreas.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnEventosClick(Sender: TObject);
+begin
+    frmEventos := TfrmEventos.Create(self);
+    try
+    frmEventos.ShowModal;
+    finally
+      frmEventos.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnInscricaoClick(Sender: TObject);
+begin
+    frmEventosDisp := TfrmEventosDisp.Create(self);
+    try
+    frmEventosDisp.ShowModal;
+    finally
+      frmEventosDisp.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnPalestrantesClick(Sender: TObject);
+begin
+    frmPalestrantes := TfrmPalestrantes.Create(self);
+    try
+    frmPalestrantes.ShowModal;
+    finally
+      frmPalestrantes.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnParticipantesClick(Sender: TObject);
+begin
+    frmParticipantes := TfrmParticipantes.Create(self);
+    try
+    frmParticipantes.ShowModal;
+    finally
+      frmParticipantes.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnPresencasClick(Sender: TObject);
+begin
+    frmPresencas := TfrmPresencas.Create(Self);
+
+      try
+        frmPresencas.ShowModal;
+      finally
+        frmPresencas.Free;
+      end;
+end;
+
+procedure TfrmPrincipal.btnSairClick(Sender: TObject);
+begin
+    frmPrincipal.Close;
+end;
+
+
+
+procedure TfrmPrincipal.EstatsticasEventos1Click(Sender: TObject);
+begin
+   frmRelEventos := TfrmRelEventos.Create(Self);
+
+    try
+        if frmRelEventos.ShowModal = mrOk then
+          begin
+
+          end;
+    finally
+      frmRelEventos.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.Financeiro1Click(Sender: TObject);
+begin
+      frmContas := TfrmContas.Create(self);
+    try
+    frmContas.ShowModal;
+    finally
+      frmContas.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnCadAreasClick(Sender: TObject);
+begin
+    frmAreas := TfrmAreas.Create(Self);
+    try
+      frmAreas.ShowModal;
+    finally
+      frmAreas.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnCadCondPagClick(Sender: TObject);
+begin
+    frmCondicaoPag := TfrmCondicaoPag.Create(self);
+    try
+      frmCondicaoPag.ShowModal;
+    finally
+      frmCondicaoPag.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnCadEventosClick(Sender: TObject);
+begin
+    frmEventos := TfrmEventos.Create(Self);
+    try
+      frmEventos.ShowModal;
+    finally
+      frmEventos.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnCadFormasClick(Sender: TObject);
+begin
+    frmFormasPag := TfrmFormasPag.Create(Self);
+
+    try
+      frmFormasPag.ShowModal;
+    finally
+      frmFormasPag.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnCadPalestrantesClick(Sender: TObject);
+begin
+   frmPalestrantes := TfrmPalestrantes.Create(Self);
+   try
+     frmPalestrantes.ShowModal;
+   finally
+     frmPalestrantes.Free;
+   end;
+end;
+
+procedure TfrmPrincipal.btnCadParticipantesClick(Sender: TObject);
+begin
+     frmParticipantes := TfrmParticipantes.Create(Self);
+     try
+        frmParticipantes.ShowModal;
+     finally
+       frmParticipantes.Free;
+     end;
+end;
+
+procedure TfrmPrincipal.btnCadFavClick(Sender: TObject);
+begin
+    frmFavorecidos := TfrmFavorecidos.Create(self);
+    try
+    frmFavorecidos.ShowModal;
+    finally
+      frmFavorecidos.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.LanamentodeContas1Click(Sender: TObject);
+begin
+    frmLancContas := TfrmLancContas.Create(Self);
+
+      try
+        frmLancContas.ShowModal;
+      finally
+        frmLancContas.Free;
+      end;
+
+end;
+
+procedure TfrmPrincipal.btnListagemEvClick(Sender: TObject);
+begin
+    frmPesquisa := TfrmPesquisa.Create(Self);
+
+    try
+      frmPesquisa.Tabela := 'Eventos';
+        if frmPesquisa.ShowModal = mrOk then
+          begin
+
+          end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnListagemFavClick(Sender: TObject);
+begin
+     frmPesquisa := TfrmPesquisa.Create(Self);
+     try
+       frmPesquisa.Tabela := 'Favorecidos';
+       if frmPesquisa.ShowModal = mrOk then
+       begin
+
+       end;
+     finally
+       frmPesquisa.Free;
+     end;
+end;
+
+procedure TfrmPrincipal.btnListagemFpgClick(Sender: TObject);
+begin
+    frmPesquisa := TfrmPesquisa.Create(Self);
+    try
+       frmPesquisa.Tabela := 'FormasPag';
+       if frmPesquisa.ShowModal = mrOk then
+       begin
+
+       end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnListagemPalClick(Sender: TObject);
+begin
+     frmPesquisa := TfrmPesquisa.Create(Self);
+
+    try
+     frmPesquisa.Tabela := 'Palestrantes';
+      if frmPesquisa.ShowModal = mrOk then
+      begin
+
+      end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnListagemAreaClick(Sender: TObject);
+begin
+    frmPesquisa := TfrmPesquisa.Create(Self);
+
+    try
+     frmPesquisa.Tabela := 'AreaConhec';
+      if frmPesquisa.ShowModal = mrOk then
+      begin
+
+      end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnListagemCondClick(Sender: TObject);
+begin
+    frmPesquisa := TfrmPesquisa.Create(Self);
+    try
+       frmPesquisa.Tabela := 'CondP';
+       if frmPesquisa.ShowModal = mrOk then
+       begin
+
+       end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+procedure TfrmPrincipal.btnListagemPartClick(Sender: TObject);
+begin
+    frmPesquisa := TfrmPesquisa.Create(Self);
+
+    try
+     frmPesquisa.Tabela := 'Participantes';
+      if frmPesquisa.ShowModal = mrOk then
+      begin
+
+      end;
+    finally
+      frmPesquisa.Free;
+    end;
+end;
+
+
+end.

@@ -1,0 +1,131 @@
+unit View.ConfirmaPresenca;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, ppDB,
+  ppDBPipe, ppBands, ppCache, ppClass, ppDesignLayer, ppParameter, ppComm,
+  ppRelatv, ppProd, ppReport, ppTxPipe, ppCtrls, ppPrnabl, Data.DB,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TfrmConfirmaPresenca = class(TForm)
+    pnlCentro: TPanel;
+    lbltitulo: TLabel;
+    lblData: TLabel;
+    lblLocal: TLabel;
+    lblIdInscricao: TLabel;
+    lblArea: TLabel;
+    Label1: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label6: TLabel;
+    lblNomePart: TLabel;
+    Label5: TLabel;
+    btnCracha: TButton;
+    btnSair: TButton;
+    QueryEtiqueta: TFDQuery;
+    QueryEtiquetaNOME_PART: TStringField;
+    QueryEtiquetaCOD_INSCRICAO: TIntegerField;
+    QueryEtiquetaTITULO_EV: TStringField;
+    QueryEtiquetaLOCAL_EV: TStringField;
+    QueryEtiquetaDATA_PRESENCA: TSQLTimeStampField;
+    QueryEtiquetaNOME_AREA: TStringField;
+    dsEtiqueta: TDataSource;
+    ppReport: TppReport;
+    ppParameterList1: TppParameterList;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppHeaderBand1: TppHeaderBand;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppDBPipeline: TppDBPipeline;
+    ppLabel1: TppLabel;
+    ppDBText1: TppDBText;
+    ppLabel2: TppLabel;
+    ppDBText2: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText3: TppDBText;
+    ppLabel4: TppLabel;
+    ppDBText4: TppDBText;
+    ppLabel5: TppLabel;
+    ppDBText5: TppDBText;
+    procedure btnSairClick(Sender: TObject);
+    procedure btnCrachaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    var data : TDateTime;
+
+
+  public
+     CodConta, CodInscricao, CodEv,CodPart : integer;
+  end;
+
+var
+  frmConfirmaPresenca: TfrmConfirmaPresenca;
+
+implementation
+
+{$R *.dfm}
+
+uses DmModule, View.Presencas;
+
+  procedure TfrmConfirmaPresenca.btnCrachaClick(Sender: TObject);
+  var reimprimircracha, Resposta : integer;
+  begin
+      // verificar se a inscrição já tem presença registrada, se sim imprimir somente o cracha
+      DM.QueryPresencas.SQL.Clear;
+      DM.QueryPresencas.SQL.Add('select p.cod_inscricao from presencas p where p.cod_inscricao = :cod');
+      DM.QueryPresencas.ParamByName('cod').AsInteger := CodInscricao;
+      DM.QueryPresencas.Open;
+      reimprimircracha := DM.QueryPresencas.FieldByName('cod_inscricao').AsInteger;
+      ShowMessage(''+IntToStr(reimprimircracha));
+      if reimprimircracha > 0 then
+      begin
+        Resposta := MessageDlg('Presença já está registrada, deseja reimprimir o crachá?', mtConfirmation, [mbYes, mbNo], 0);
+
+          // Verifica a resposta do usuário
+            if Resposta = mrYes then
+             begin
+                QueryEtiqueta.ParamByName('cod').AsInteger := CodInscricao;
+                QueryEtiqueta.Open;
+                ppReport.Print;
+             end;
+      end
+      else
+      begin
+         // INSERT PRESENÇAS
+     DM.QueryPresencas.SQL.Clear;
+     DM.QueryPresencas.SQL.Add('INSERT INTO PRESENCAS (Cod_EVENTO,Cod_PARTICIPANTE, COD_INSCRICAO, DATA_PRESENCA) VALUES (:CodEV,:CodPart,:CODINS, :DATA)');
+     DM.QueryPresencas.ParamByName('CodEV').AsInteger := CodEv;
+     DM.QueryPresencas.ParamByName('CodPart').AsInteger := CodPart;
+     DM.QueryPresencas.ParamByName('CODINS').AsInteger := CodInscricao;
+     DM.QueryPresencas.ParamByName('data').AsDateTime := data;
+     DM.QueryPresencas.ExecSQL;
+
+     // Define cod inscrição para impressão do cracha
+
+      QueryEtiqueta.ParamByName('cod').AsInteger := CodInscricao;
+      QueryEtiqueta.Open;
+       ppReport.Print;
+
+      // Exiba uma mensagem informando que a inscrição foi realizada com sucesso
+      ShowMessage('Presença Confirmada');
+      end;
+  end;
+
+procedure TfrmConfirmaPresenca.btnSairClick(Sender: TObject);
+begin
+  frmConfirmaPresenca.Close;
+end;
+
+procedure TfrmConfirmaPresenca.FormShow(Sender: TObject);
+begin
+    Data := now;
+     lblData.Caption := DateTimeToStr(Data);
+end;
+
+end.

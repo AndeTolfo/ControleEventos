@@ -1,0 +1,529 @@
+object frmEventos: TfrmEventos
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'frmEventos'
+  ClientHeight = 442
+  ClientWidth = 386
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnResize = FormResize
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnlAgendamentos: TPanel
+    Left = 0
+    Top = 51
+    Width = 386
+    Height = 391
+    Align = alClient
+    AutoSize = True
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitWidth = 694
+    object PG: TPageControl
+      Left = 0
+      Top = 0
+      Width = 386
+      Height = 391
+      ActivePage = pgListagem
+      Align = alClient
+      TabOrder = 0
+      ExplicitWidth = 694
+      object pgCadastro: TTabSheet
+        Caption = 'Cadastro'
+        OnShow = pgCadastroShow
+        object Label4: TLabel
+          Left = 16
+          Top = 103
+          Width = 117
+          Height = 13
+          Caption = 'Descri'#231#227'o do Evento:'
+          FocusControl = edtDescricao
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label9: TLabel
+          Left = 178
+          Top = 199
+          Width = 144
+          Height = 13
+          Caption = 'N'#250'mero M'#225'ximo Pessoas:'
+          FocusControl = edtNumPessoas
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label8: TLabel
+          Left = 16
+          Top = 254
+          Width = 101
+          Height = 13
+          Caption = 'COD Palestrantes:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label5: TLabel
+          Left = 100
+          Top = 9
+          Width = 72
+          Height = 13
+          Caption = 'Data Evento:'
+          FocusControl = edtData
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label6: TLabel
+          Left = 16
+          Top = 153
+          Width = 91
+          Height = 13
+          Caption = 'Local do Evento:'
+          FocusControl = edtLocal
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label10: TLabel
+          Left = 208
+          Top = 12
+          Width = 87
+          Height = 13
+          Caption = 'Valor Inscri'#231#227'o:'
+          FocusControl = edtValor
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblCod: TLabel
+          Left = 16
+          Top = 12
+          Width = 42
+          Height = 13
+          Caption = 'COD EV:'
+          FocusControl = edtCodEv
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label3: TLabel
+          Left = 16
+          Top = 60
+          Width = 94
+          Height = 13
+          Caption = 'T'#237'tulo do Evento:'
+          FocusControl = edtTitulo
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label7: TLabel
+          Left = 16
+          Top = 199
+          Width = 89
+          Height = 13
+          Caption = #193'rea do Evento:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object btnPesquisaPal: TSpeedButton
+          Left = 92
+          Top = 273
+          Width = 25
+          Height = 22
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7F7E6E6E6CBCBCBA5A5
+            A57D7D7D797979F0F0F0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7
+            F7F7E1E1E1CACACAB7B7B7A8A8A8A0A0A03030302D2D2D9D9D9EFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDF9F9F9F8F8F8FBFBFBF3F3F34F4E
+            4E2D2C2D797979F3F3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFF3F3F35150502D2C2D797979F3F3F3FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4F4F45150502D2C2D7979
+            79F3F3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFF9D98964A4848797979F3F3F3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            D5D5D5979695969594969694939392BBBBBABCB9B8908A88B1ADACF4F4F4FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFBDBDBDA6A6A3C7C7C5C5C5C4C5C4C3C6C6C5B6
+            B6B3787574C7C5C4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE5E5E5999997
+            B9B9B7B4B4B2B2B2AFB2B2AFB4B4B1B7B7B4ADADAABDBDBCFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFA6A6A6A9A9A6A7A7A4A7A7A4A7A7A4A7A7A4A7A8A4A8
+            A8A4A9A9A691918FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9292919F9F9C
+            9FA09DA0A09DA0A09DA0A09DA0A19EA1A19EA1A19E848583FFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFF939492A0A19EA3A3A1A4A5A2A5A5A3A5A6A3A5A6A3A5
+            A5A3A5A5A2838482FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB0B0B0ABABA9
+            B9B9B8B9B9B8B9BAB8B9BAB8B9BAB8B9BAB8B6B6B5929291FFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFF4F4F4868786CCCDCCD3D3D3D3D4D3D3D4D3D3D4D3D3
+            D3D2989998D4D4D4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDCDCDC
+            898A89CCCDCCEEEEEEF1F2F2D9D9D9999A99BDBDBDFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4F4F4B1B1B1959595929392A7A7A7E4
+            E4E4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          OnClick = btnPesquisaPalClick
+        end
+        object edtData: TDBEdit
+          Left = 100
+          Top = 28
+          Width = 77
+          Height = 21
+          DataField = 'DATA_EV'
+          DataSource = DM.dsEventos
+          MaxLength = 10
+          TabOrder = 0
+        end
+        object edtLocal: TDBEdit
+          Left = 16
+          Top = 172
+          Width = 300
+          Height = 21
+          DataField = 'LOCAL_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 4
+        end
+        object edtNumPessoas: TDBEdit
+          Left = 182
+          Top = 218
+          Width = 134
+          Height = 21
+          DataField = 'VAGAS_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 6
+        end
+        object edtValor: TDBEdit
+          Left = 208
+          Top = 31
+          Width = 108
+          Height = 21
+          DataField = 'VALOR_INSCRICAO_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 1
+        end
+        object edtCodEv: TDBEdit
+          Left = 16
+          Top = 28
+          Width = 49
+          Height = 21
+          DataField = 'COD_EVENTO'
+          DataSource = DM.dsEventos
+          TabOrder = 8
+        end
+        object edtTitulo: TDBEdit
+          Left = 16
+          Top = 76
+          Width = 300
+          Height = 21
+          DataField = 'TITULO_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 2
+        end
+        object edtDescricao: TDBEdit
+          Left = 16
+          Top = 120
+          Width = 300
+          Height = 21
+          DataField = 'DESCRICAO_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 3
+        end
+        object cbArea: TDBLookupComboBox
+          Left = 16
+          Top = 218
+          Width = 145
+          Height = 21
+          DataField = 'COD_AREA'
+          DataSource = DM.dsEventos
+          KeyField = 'COD_AREA'
+          ListField = 'NOME_AREA'
+          ListSource = DM.dsAreas
+          TabOrder = 5
+        end
+        object edtCodPales: TDBEdit
+          Left = 16
+          Top = 273
+          Width = 70
+          Height = 21
+          DataField = 'COD_PALESTRANTE_EV'
+          DataSource = DM.dsEventos
+          TabOrder = 7
+        end
+        object btnExcluir: TButton
+          Left = 176
+          Top = 312
+          Width = 58
+          Height = 33
+          Caption = 'Excluir'
+          TabOrder = 9
+          OnClick = btnExcluirClick
+        end
+        object btnNovo: TButton
+          Left = 100
+          Top = 312
+          Width = 53
+          Height = 33
+          Caption = 'Novo'
+          TabOrder = 10
+          OnClick = btnNovoClick
+        end
+        object btnSair: TButton
+          Left = 264
+          Top = 312
+          Width = 58
+          Height = 33
+          Caption = 'Sair'
+          TabOrder = 11
+          OnClick = btnSairClick
+        end
+        object btnSalvar: TButton
+          Left = 16
+          Top = 312
+          Width = 57
+          Height = 33
+          Caption = 'Salvar'
+          TabOrder = 12
+          OnClick = btnSalvarClick
+        end
+      end
+      object pgListagem: TTabSheet
+        Caption = 'Listagem'
+        ImageIndex = 1
+        OnShow = pgListagemShow
+        object lblNome: TLabel
+          Left = 139
+          Top = -1
+          Width = 93
+          Height = 16
+          Caption = 'Digite o T'#237'tulo:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object DBListagem: TDBGrid
+          Left = 3
+          Top = 44
+          Width = 374
+          Height = 309
+          DataSource = DM.dsEventos
+          ReadOnly = True
+          TabOrder = 3
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -11
+          TitleFont.Name = 'Tahoma'
+          TitleFont.Style = []
+          OnDblClick = DBListagemDblClick
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'COD_EVENTO'
+              Title.Caption = 'COD'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = 35
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'TITULO_EV'
+              Title.Caption = 'T'#237'tulo'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = 163
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'DESCRICAO_EV'
+              Title.Caption = 'Descri'#231#227'o'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'DATA_EV'
+              Title.Caption = 'Data'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = 72
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'LOCAL_EV'
+              Title.Caption = 'Local'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = -1
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'VALOR_INSCRICAO_EV'
+              Title.Caption = 'Valor'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = 69
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'COD_AREA'
+              Title.Caption = 'Area'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = -1
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'COD_PALESTRANTE_EV'
+              Title.Caption = 'Pales'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = -1
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'VAGAS_EV'
+              Title.Caption = 'Vagas'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = -1
+              Visible = False
+            end>
+        end
+        object rOpcao: TRadioGroup
+          Left = 0
+          Top = 9
+          Width = 137
+          Height = 33
+          Caption = 'Op'#231#245'es de Consulta'
+          Columns = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ItemIndex = 0
+          Items.Strings = (
+            'Nome'
+            'ID')
+          ParentFont = False
+          TabOrder = 0
+          OnClick = rOpcaoClick
+        end
+        object btnPesquisaListagem: TButton
+          Left = 271
+          Top = 15
+          Width = 75
+          Height = 25
+          Caption = 'Pesquisar'
+          TabOrder = 2
+          OnClick = btnPesquisaListagemClick
+        end
+        object edtConsultaListagem: TEdit
+          Left = 140
+          Top = 17
+          Width = 127
+          Height = 21
+          TabOrder = 1
+        end
+      end
+    end
+  end
+  object pnlTopo: TPanel
+    Left = 0
+    Top = 0
+    Width = 386
+    Height = 51
+    Align = alTop
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 1
+    ExplicitWidth = 694
+    object lbltitulo: TLabel
+      Left = 96
+      Top = 17
+      Width = 142
+      Height = 19
+      Caption = 'Cadastro Eventos'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+end

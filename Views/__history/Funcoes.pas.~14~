@@ -1,0 +1,58 @@
+unit Funcoes;
+
+interface
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+ function VerificaCamposPreenchidos(const AEdits: array of TEdit): Boolean;
+ function VerificarCamposVazios(const AControls: array of TControl): Boolean;
+implementation
+
+ function VerificaCamposPreenchidos(const AEdits: array of TEdit): Boolean;
+var
+  Edit: TEdit;
+begin
+  Result := True;
+
+  for Edit in AEdits do
+  begin
+    if Edit.Text = '' then
+    begin
+      Result := False;
+      Break;
+    end;
+  end;
+end;
+
+
+end.
+
+function VerificarCamposVazios(const AControls: array of TControl): Boolean;
+var
+  Control: TControl;
+begin
+  Result := True;
+
+  for Control in AControls do
+  begin
+    if (Control is TCustomEdit) and (Trim(TCustomEdit(Control).Text) = '') then
+    begin
+      Result := False;
+      Break;
+    end
+    else if (Control is TComboBox) and (TComboBox(Control).ItemIndex = -1) then
+    begin
+      Result := False;
+      Break;
+    end
+    else if (Control is TDBEdit) and ((TDBEdit(Control).DataSource = nil) or (TDBEdit(Control).DataField = '')) then
+    begin
+      Result := False;
+      Break;
+    end;
+    // Adicione aqui outras verificações para outros tipos de controles, se necessário
+  end;
+end;
+
+end;

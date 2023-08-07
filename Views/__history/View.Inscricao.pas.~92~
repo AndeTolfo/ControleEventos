@@ -1,0 +1,112 @@
+unit View.Inscricao;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, DmModule;
+
+type
+  TfrmInscricao = class(TForm)
+    pnlCentro: TPanel;
+    pnlTopo: TPanel;
+    pnlRodape: TPanel;
+    lblInscricao: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    lblParticipantes: TLabel;
+    lblTitulo: TLabel;
+    lblData: TLabel;
+    lblValor: TLabel;
+    btnConfirmar: TButton;
+    btnSair: TButton;
+    cbPag: TComboBox;
+    procedure btnSairClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    var CodEvento, CodParticipante : integer; DataEvento : string;
+  end;
+
+var
+  frmInscricao: TfrmInscricao;
+
+implementation
+
+{$R *.dfm}
+
+uses View.EventosDisp, View.EventosInfo;
+
+procedure TfrmInscricao.btnConfirmarClick(Sender: TObject);
+var TipoPagamento, CodConta : integer;
+begin
+   if cbPag.ItemIndex = -1 then
+  begin
+    ShowMessage('Selecione uma opção de pagamento.');
+    Exit;
+  end;
+  TipoPagamento := cbPag.ItemIndex;
+
+  // insert contas
+  DM.QueryFinanceiro.SQL.Clear;
+  DM.QueryFinanceiro.SQL.Add('INSERT INTO financeiro (COD_EVENTO, DESCRICAO_CONTA, TIPO_CONTA, DATA_CONTA, COD_COND, NNOTA_CONTA, VALOR_CONTA, QTDPARCELAS_CONTA, COD_FAVORECIDO, TIPOFAVORECIDO, SITUACAO_CONTA)');
+  DM.QueryFinanceiro.SQL.Add('VALUES (:COD_EVENTO, :DESCRICAO_CONTA, :TIPO_CONTA, :DATA_CONTA, :COD_COND, :NNOTA_CONTA, :VALOR_CONTA, :QTDPARCELAS_CONTA, :COD_FAVORECIDO, :TIPOFAVORECIDO, :SITUACAO_CONTA)');
+  DM.QueryFinanceiro.ParamByName('COD_EVENTO').AsInteger := CodEvento;
+  DM.QueryFinanceiro.ParamByName('DESCRICAO_CONTA').AsString := 'Conta ref Evento '+ IntToStr(CodEvento);;
+  DM.QueryFinanceiro.ParamByName('TIPO_CONTA').AsString := 'R';
+  DM.QueryFinanceiro.ParamByName('DATA_CONTA').AsDate := Now;
+  DM.QueryFinanceiro.ParamByName('COD_COND').AsInteger := 1;
+  DM.QueryFinanceiro.ParamByName('NNOTA_CONTA').AsString := '';
+  DM.QueryFinanceiro.ParamByName('VALOR_CONTA').AsFloat := frmEventosInfo.valorev;
+  DM.QueryFinanceiro.ParamByName('QTDPARCELAS_CONTA').AsInteger := 1;
+  DM.QueryFinanceiro.ParamByName('COD_FAVORECIDO').AsInteger := CodParticipante;
+  DM.QueryFinanceiro.ParamByName('TIPOFAVORECIDO').AsString := 'PART';
+  DM.QueryFinanceiro.ParamByName('SITUACAO_CONTA').AsString := 'P';
+  DM.QueryFinanceiro.ExecSQL;
+
+// Obter o código da conta inserida
+    DM.QueryFinanceiro.SQL.Clear;
+    DM.QueryFinanceiro.SQL.add('SELECT first 1 * FROM financeiro WHERE COD_EVENTO = :COD_EVENTO order by cod_conta desc');
+    DM.QueryFinanceiro.ParamByName('COD_EVENTO').AsInteger := CodEvento;
+    DM.QueryFinanceiro.Open();
+    CodConta := DM.QueryFinanceiro.FieldByName('COD_CONTA').AsInteger;
+    DM.QueryFinanceiro.Close;
+  // Insert Parcelas
+    DM.QueryParcelas.SQL.Clear;
+    DM.QueryParcelas.SQL.Add('INSERT INTO PARCELAS (COD_CONTA_PARCELA, NUM_PARCELA, DATA_VENC_PARCELA, VALOR_PARCELA, SITUACAO_PARCELA, VALOR_PAGO_PARCELA)');
+    DM.QueryParcelas.SQL.Add('VALUES (:COD_CONTA_PARCELA, :NUM_PARCELA, :DATA_VENC_PARCELA, :VALOR_PARCELA, :SITUACAO_PARCELA, :VALOR_PAGO_PARCELA)');
+    DM.QueryParcelas.ParamByName('COD_CONTA_PARCELA').AsInteger := CodConta;
+    DM.QueryParcelas.ParamByName('NUM_PARCELA').AsInteger := 1;
+    DM.QueryParcelas.ParamByName('DATA_VENC_PARCELA').AsDate := StrToDate(frmEventosInfo.lblData.Caption);
+    DM.QueryParcelas.ParamByName('VALOR_PARCELA').AsFloat := frmEventosInfo.valorev;
+    DM.QueryParcelas.ParamByName('SITUACAO_PARCELA').AsInteger := 0;
+    DM.QueryParcelas.ParamByName('VALOR_PAGO_PARCELA').AsFloat := 0;
+    DM.QueryParcelas.ExecSQL;
+
+    //
+  DM.QueryInscricoes.SQL.Clear;
+  DM.QueryInscricoes.SQL.Add('INSERT INTO inscricoes (Cod_Evento,Cod_Participante, Tipo_Pagamento, COD_CONTA) VALUES (:CodEvento,:CodParticipante, :TipoPagamento, :COD_CONTA)');
+  DM.QueryInscricoes.ParamByName('CodParticipante').AsInteger := CodParticipante;
+  DM.QueryInscricoes.ParamByName('CodEvento').AsInteger := CodEvento;
+  DM.QueryInscricoes.ParamByName('TipoPagamento').AsInteger := TipoPagamento;
+  DM.QueryInscricoes.ParamByName('COD_CONTA').AsInteger := CodConta;
+  DM.QueryInscricoes.ExecSQL;
+
+
+  // Exiba uma mensagem informando que a inscrição foi realizada com sucesso
+  ShowMessage('Inscrição realizada com sucesso.');
+  // Feche o formulário de inscrição
+  Close;
+
+end;
+
+procedure TfrmInscricao.btnSairClick(Sender: TObject);
+begin
+      frmInscricao.Close;
+end;
+
+end.

@@ -1,0 +1,240 @@
+object frmFavorecidos: TfrmFavorecidos
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'frmFavorecidos'
+  ClientHeight = 323
+  ClientWidth = 358
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnResize = FormResize
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnlTopo: TPanel
+    Left = 0
+    Top = 0
+    Width = 358
+    Height = 65
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 691
+    object lblTitulo: TLabel
+      Left = 56
+      Top = 21
+      Width = 174
+      Height = 19
+      Caption = 'Cadastro Favorecidos'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object pnlCentro: TPanel
+    Left = 0
+    Top = 65
+    Width = 358
+    Height = 258
+    Align = alClient
+    TabOrder = 1
+    ExplicitWidth = 691
+    ExplicitHeight = 378
+    object PG: TPageControl
+      Left = 1
+      Top = 1
+      Width = 356
+      Height = 256
+      ActivePage = PGCadastro
+      Align = alClient
+      TabOrder = 0
+      ExplicitHeight = 333
+      object PGCadastro: TTabSheet
+        Caption = 'Cadastro'
+        OnShow = PGCadastroShow
+        object Label1: TLabel
+          Left = 16
+          Top = 77
+          Width = 117
+          Height = 13
+          Caption = 'Nome do Favorecido:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label3: TLabel
+          Left = 16
+          Top = 21
+          Width = 26
+          Height = 13
+          Caption = 'COD:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object btnNovo: TButton
+          Left = 103
+          Top = 157
+          Width = 66
+          Height = 33
+          Caption = 'Novo'
+          TabOrder = 0
+          OnClick = btnNovoClick
+        end
+        object btnSair: TButton
+          Left = 265
+          Top = 157
+          Width = 64
+          Height = 33
+          Caption = 'Sair'
+          TabOrder = 1
+          OnClick = btnSairClick
+        end
+        object btnSalvar: TButton
+          Left = 23
+          Top = 157
+          Width = 66
+          Height = 33
+          Caption = 'Salvar'
+          TabOrder = 2
+          OnClick = btnSalvarClick
+        end
+        object edtCodFav: TDBEdit
+          Left = 16
+          Top = 40
+          Width = 105
+          Height = 21
+          DataField = 'COD_FAV'
+          DataSource = DM.dsFavorecidos
+          TabOrder = 3
+        end
+        object EdtNomeFav: TDBEdit
+          Left = 16
+          Top = 96
+          Width = 300
+          Height = 21
+          DataField = 'NOME_FAV'
+          DataSource = DM.dsFavorecidos
+          TabOrder = 4
+        end
+        object btnExcluir: TButton
+          Left = 182
+          Top = 157
+          Width = 67
+          Height = 33
+          Caption = 'Excluir'
+          TabOrder = 5
+          OnClick = btnExcluirClick
+        end
+      end
+      object Listagem: TTabSheet
+        Caption = 'Listagem'
+        ImageIndex = 1
+        OnShow = ListagemShow
+        object lblNome: TLabel
+          Left = 144
+          Top = 3
+          Width = 93
+          Height = 16
+          Caption = 'Digite o Nome:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object rOpcao: TRadioGroup
+          Left = 3
+          Top = 11
+          Width = 137
+          Height = 33
+          Caption = 'Op'#231#245'es de Consulta'
+          Columns = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ItemIndex = 0
+          Items.Strings = (
+            'Nome'
+            'Cod')
+          ParentFont = False
+          TabOrder = 0
+          OnClick = rOpcaoClick
+        end
+        object edtConsulta: TEdit
+          Left = 142
+          Top = 21
+          Width = 131
+          Height = 21
+          TabOrder = 1
+        end
+        object btnPesquisar: TButton
+          Left = 274
+          Top = 19
+          Width = 71
+          Height = 25
+          Caption = 'Pesquisar'
+          TabOrder = 2
+          OnClick = btnPesquisarClick
+        end
+        object dbListagem: TDBGrid
+          Left = 0
+          Top = 56
+          Width = 349
+          Height = 169
+          DataSource = DM.dsFavorecidos
+          ReadOnly = True
+          TabOrder = 3
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -11
+          TitleFont.Name = 'Tahoma'
+          TitleFont.Style = []
+          OnDblClick = dbListagemDblClick
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'COD_FAV'
+              Title.Caption = 'COD'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'NOME_FAV'
+              Title.Caption = 'Nome '
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -11
+              Title.Font.Name = 'Tahoma'
+              Title.Font.Style = [fsBold]
+              Width = 250
+              Visible = True
+            end>
+        end
+      end
+    end
+  end
+end

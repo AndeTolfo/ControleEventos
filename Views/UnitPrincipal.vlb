@@ -1,0 +1,13 @@
+﻿[Image1]
+Coordinates=161,10,57,58
+Visible=True
+
+[pnlTopo]
+Coordinates=10,10,61,58
+
+[pnlCentro]
+Coordinates=81,10,70,58
+
+[]
+Coordinates=10,78,77,58
+

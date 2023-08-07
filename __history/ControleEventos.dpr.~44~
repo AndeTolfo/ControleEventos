@@ -1,0 +1,36 @@
+program ControleEventos;
+
+uses
+  Vcl.Forms,
+  UnitPrincipal in 'Views\UnitPrincipal.pas' {frmPrincipal},
+  DmModule in 'DmModule.pas' {DM: TDataModule},
+  View.Areas in 'Views\View.Areas.pas' {frmAreas},
+  View.Participantes in 'Views\View.Participantes.pas' {frmParticipantes},
+  View.Palestrantes in 'Views\View.Palestrantes.pas' {frmPalestrantes},
+  View.Eventos in 'Views\View.Eventos.pas' {frmEventos},
+  View.Pesquisas in 'Views\View.Pesquisas.pas' {frmPesquisa},
+  View.EventosDisp in 'Views\View.EventosDisp.pas' {frmEventosDisp},
+  View.EventosInfo in 'Views\View.EventosInfo.pas' {frmEventosInfo},
+  View.Inscricao in 'Views\View.Inscricao.pas' {frmInscricao},
+  View.Contas in 'Views\View.Contas.pas' {frmContas},
+  View.FormasPag in 'Views\View.FormasPag.pas' {frmFormasPag},
+  View.Pagamento in 'Views\View.Pagamento.pas' {frmPagamentos},
+  View.Favorecido in 'Views\View.Favorecido.pas' {frmFavorecidos},
+  View.LancContas in 'Views\View.LancContas.pas' {frmLancContas},
+  View.CondPag in 'Views\View.CondPag.pas' {frmCondicaoPag},
+  View.HistPagamento in 'Views\View.HistPagamento.pas' {frmHistPag},
+  Funcoes in 'Views\Funcoes.pas',
+  View.Presencas in 'Views\View.Presencas.pas' {frmPresencas},
+  View.ConfirmaPresenca in 'Views\View.ConfirmaPresenca.pas' {frmConfirmaPresenca},
+  View.RelEventos in 'Views\View.RelEventos.pas' {frmRelEventos},
+  View.Balancete in 'Views\View.Balancete.pas' {frmBalancete};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.Run;
+end.

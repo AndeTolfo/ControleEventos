@@ -1,0 +1,154 @@
+unit View.FormasPag;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DmModule, Vcl.ExtCtrls, Data.DB,
+  Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, Vcl.DBCtrls, Vcl.ComCtrls;
+
+type
+  TfrmFormasPag = class(TForm)
+    pnlCentro: TPanel;
+    pnlTopo: TPanel;
+    PG: TPageControl;
+    pgCadastro: TTabSheet;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    btnExcluir: TButton;
+    btnNovo: TButton;
+    btnSair: TButton;
+    btnSalvar: TButton;
+    edtCodFPG: TDBEdit;
+    edtNomeFPG: TDBEdit;
+    edtDescricaoFPG: TDBEdit;
+    pgListagem: TTabSheet;
+    lblNome: TLabel;
+    dbListagem: TDBGrid;
+    rOpcao: TRadioGroup;
+    btnPesquisar: TButton;
+    edtConsulta: TEdit;
+    lblTitulo: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure pgCadastroShow(Sender: TObject);
+    procedure pgListagemShow(Sender: TObject);
+    procedure rOpcaoClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure dbListagemDblClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+  private
+    var Varcontrol : Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFormasPag: TfrmFormasPag;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmFormasPag.btnExcluirClick(Sender: TObject);
+begin
+    if Dm.QueryFormasPag.RecordCount > 0 then
+    begin
+        DM.QueryFormasPag.Delete;
+        ShowMessage('Cadastro Excluído');
+    end
+    else
+    begin
+        ShowMessage('Erro na Exclusão');
+    end;
+
+end;
+
+procedure TfrmFormasPag.btnNovoClick(Sender: TObject);
+begin
+    DM.QueryFormasPag.Insert;
+end;
+
+procedure TfrmFormasPag.btnSairClick(Sender: TObject);
+begin
+    frmFormasPag.Close;
+end;
+
+procedure TfrmFormasPag.btnSalvarClick(Sender: TObject);
+begin
+       if dm.QueryFormasPag.State in dsEditModes then
+     begin
+        DM.QueryFormasPag.Post;
+        ShowMessage('Cadastro Concluído');
+        DM.QueryFormasPag.EmptyDataSet;
+     end
+     else
+     begin
+        ShowMessage('Verifique os Campos');
+     end;
+
+end;
+
+procedure TfrmFormasPag.dbListagemDblClick(Sender: TObject);
+begin
+    VarControl := True;
+    PG.ActivePage := PGCadastro;
+end;
+
+procedure TfrmFormasPag.FormResize(Sender: TObject);
+begin
+      Left := (Screen.Width - Width) div 2;
+      Top := (Screen.Height - Height) div 2;
+end;
+
+procedure TfrmFormasPag.FormShow(Sender: TObject);
+begin
+  PG.ActivePage := pgCadastro;
+  edtNomeFPG.SetFocus;
+end;
+
+procedure TfrmFormasPag.pgCadastroShow(Sender: TObject);
+begin
+   lblTitulo.Caption := 'Cadastro Formas de Pagamento';
+    frmFormasPag.Width := 471  ;
+    frmFormasPag.Height := 317 ;
+  if VarControl then
+    begin
+
+    end
+    else
+    begin
+      DM.QueryFormasPag.Open;
+      DM.QueryFormasPag.EmptyDataSet;
+    end;
+    VarControl := False;
+end;
+
+procedure TfrmFormasPag.pgListagemShow(Sender: TObject);
+begin
+    lblTitulo.Caption := 'Listagem Formas de Pagamento';
+    frmFormasPag.Width := 647;
+    frmFormasPag.Height := 422;
+    rOpcao.SetFocus;
+    DM.QueryFormasPag.SQL.Clear;
+    DM.QueryFormasPag.SQL.Add('select * from area_conhecimento order by 1');
+    DM.QueryFormasPag.Open;
+
+end;
+
+procedure TfrmFormasPag.rOpcaoClick(Sender: TObject);
+begin
+    if(rOpcao.ItemIndex = 0)then
+    begin
+      lblNome.Caption := 'Digite o Nome:';
+    end;
+    if(rOpcao.ItemIndex = 1) then
+    begin
+      lblNome.Caption := 'Digite o Cod:';
+    end;
+end;
+
+end.

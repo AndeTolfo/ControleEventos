@@ -1,0 +1,129 @@
+unit View.Favorecido;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TfrmFavorecidos = class(TForm)
+    pnlTopo: TPanel;
+    pnlCentro: TPanel;
+    lblTitulo: TLabel;
+    edtCodFav: TDBEdit;
+    EdtNomeFav: TDBEdit;
+    Label3: TLabel;
+    Label1: TLabel;
+    btnSalvar: TButton;
+    btnNovo: TButton;
+    btnExcluir: TButton;
+    btnSair: TButton;
+    PG: TPageControl;
+    PGCadastro: TTabSheet;
+    Listagem: TTabSheet;
+    rOpcao: TRadioGroup;
+    lblNome: TLabel;
+    edtConsulta: TEdit;
+    btnPesquisar: TButton;
+    dbListagem: TDBGrid;
+    procedure PGCadastroShow(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure dbListagemDblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    Varcontrol : Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFavorecidos: TfrmFavorecidos;
+
+implementation
+
+{$R *.dfm}
+
+uses DmModule;
+
+procedure TfrmFavorecidos.btnExcluirClick(Sender: TObject);
+begin
+  if Dm.QueryFavorecidos.RecordCount > 0 then
+    begin
+        DM.QueryFavorecidos.Delete;
+        ShowMessage('Cadastro Excluído');
+        DM.QueryFavorecidos.EmptyDataSet;
+
+    end
+    else
+    begin
+        ShowMessage('Erro na Exclusão');
+    end;
+end;
+
+procedure TfrmFavorecidos.btnNovoClick(Sender: TObject);
+begin
+  Dm.QueryFavorecidos.Insert;
+end;
+
+procedure TfrmFavorecidos.btnSairClick(Sender: TObject);
+begin
+  frmFavorecidos.Close;
+end;
+
+procedure TfrmFavorecidos.btnSalvarClick(Sender: TObject);
+begin
+    if DM.QueryFavorecidos.State in dsEditModes then
+     begin
+        DM.QueryFavorecidos.Post;
+        ShowMessage('Cadastro Concluído');
+        DM.QueryFavorecidos.EmptyDataSet;
+     end
+     else
+     begin
+        ShowMessage('Verifique os Campos');
+     end;
+end;
+
+procedure TfrmFavorecidos.PGCadastroShow(Sender: TObject);
+begin
+    lblTitulo.Caption := 'Cadastro de Favorecidos';
+    frmFavorecidos.Width := 471  ;
+    frmFavorecidos.Height := 317 ;
+  if VarControl then
+    begin
+
+    end
+    else
+    begin
+      DM.QueryFavorecidos.Open;
+      DM.QueryFavorecidos.EmptyDataSet;
+    end;
+    VarControl := False;
+
+end;
+
+procedure TfrmFavorecidos.dbListagemDblClick(Sender: TObject);
+begin
+    VarControl := True;
+    PG.ActivePage := PGCadastro;
+end;
+
+procedure TfrmFavorecidos.FormResize(Sender: TObject);
+begin
+      Left := (Screen.Width - Width) div 2;
+      Top := (Screen.Height - Height) div 2;
+end;
+
+procedure TfrmFavorecidos.FormShow(Sender: TObject);
+begin
+  PG.ActivePage := pgCadastro;
+  EdtNomeFav.SetFocus;
+end;
+
+end.

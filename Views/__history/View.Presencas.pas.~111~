@@ -1,0 +1,234 @@
+unit View.Presencas;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
+  View.Participantes, Data.DB, Vcl.Grids, Vcl.DBGrids, DmModule, View.Pagamento,
+  View.ConfirmaPresenca;
+
+type
+  TfrmPresencas = class(TForm)
+    pnlCentro: TPanel;
+    pnlTopo: TPanel;
+    pnlRodape: TPanel;
+    lbltitulo: TLabel;
+    lblTipo: TLabel;
+    edtCodFav: TEdit;
+    edtNomeFav: TEdit;
+    btnPesquisaCliente: TSpeedButton;
+    btnCadCliente: TSpeedButton;
+    dbListagem: TDBGrid;
+    DsInscricoes: TDataSource;
+    btnConfirmarPres: TButton;
+    procedure btnPesquisaClienteClick(Sender: TObject);
+    procedure btnCadClienteClick(Sender: TObject);
+    procedure edtCodFavChange(Sender: TObject);
+    procedure dbListagemCellClick(Column: TColumn);
+    procedure btnConfirmarPresClick(Sender: TObject);
+  private
+    var codselectpar : integer; NomeSelectPar : string;
+     SelectedCodInscricao : integer;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPresencas: TfrmPresencas;
+
+implementation
+
+{$R *.dfm}
+
+uses View.Pesquisas;
+
+procedure TfrmPresencas.btnCadClienteClick(Sender: TObject);
+begin
+    frmParticipantes := TfrmParticipantes.Create(Self);
+          try
+          frmParticipantes.Tabela := 'LancContasCadPart';
+          if frmParticipantes.ShowModal = mrOk then
+          begin
+           //definir nos edt
+            edtCodFav.Text := IntToStr(frmParticipantes.FUltimoCodEv);
+            edtNomeFav.Text := frmParticipantes.FUltimoNomeEv;
+          //setar para as variaveis
+            codselectpar := StrToInt(edtCodFav.Text);
+            Nomeselectpar := edtNomeFav.Text;
+          end;
+          finally
+            frmParticipantes.Free;
+          end;
+end;
+
+procedure TfrmPresencas.btnPesquisaClienteClick(Sender: TObject);
+begin
+           frmPesquisa := TfrmPesquisa.Create(Self);
+           try
+          frmPesquisa.Tabela := 'Participantes';
+          frmPesquisa.Click := 'Sim';
+           if edtCodFav.Text <> '' then
+              begin
+                frmPesquisa.edtConsulta.Text := edtCodFav.Text; // Passa o valor do campo para a pesquisa
+                frmPesquisa.rOpcao.ItemIndex := 1;
+                frmPesquisa.btnPesquisar.OnClick(btnPesquisaCliente);
+              end;
+
+          if frmPesquisa.ShowModal = mrOk then
+          begin
+            CodSelectpar := StrToInt(frmPesquisa.CodSelect);
+            Nomeselectpar := frmPesquisa.NomeSelect;
+
+            if (CodSelectpar <> 0) then
+            begin
+                edtCodFav.Text := IntToStr(CodSelectpar);
+                edtNomeFav.Text := Nomeselectpar;
+              end
+              else
+              begin
+                  ShowMessage('Erro no Participante');
+              end;
+          end;
+        finally
+          frmPesquisa.Free;
+         end;
+end;
+
+
+  procedure TfrmPresencas.btnConfirmarPresClick(Sender: TObject);
+  var
+  Restante : Double;
+  Resposta,CODCONTA, CODEV, CODPART : integer;
+  NomePart, NomeEv, LocalEv, NomeArea : String;
+  begin
+    if SelectedCodInscricao <> 0 then
+    begin
+      Restante := dbListagem.DataSource.DataSet.FieldByName('restante').AsFloat;
+      //parametros que vão ser reutilizados
+          //obter informações conta/parcela
+            DM.QueryTeste.SQL.Clear;
+            DM.QueryTeste.SQL.Add('SELECT P.cod_parcela, P.COD_CONTA_PARCELA, P.NUM_PARCELA, F.TIPO_CONTA, P.DATA_VENC_PARCELA, P.VALOR_PARCELA, case p.situacao_parcela when ''0'' then ''PDNT'' when ''1'' then ''QTD'' when ''2'' then ''CANC'' end as Situacao_parcela,');
+            DM.QueryTeste.SQL.Add('P.VALOR_PAGO_PARCELA,sum(p.valor_parcela - p.valor_pago_parcela) as Valor_Restante, Part.NOME_Part, F.Cod_evento, f.descricao_conta, ev.titulo_ev, ev.local_ev, AR.NOME_AREA, P.COD_PART');
+            DM.QueryTeste.SQL.Add('FROM PARCELAS P');
+            DM.QueryTeste.SQL.Add('INNER JOIN FINANCEIRO F ON P.COD_CONTA_PARCELA = F.COD_CONTA');
+            DM.QueryTeste.SQL.Add('INNER JOIN PARTICIPANTES Part ON Part.COD_PART = F.COD_FAVORECIDO');
+            DM.QueryTeste.SQL.Add('INNER JOIN EVENTOS EV ON EV.COD_EVENTO = F.COD_EVENTO');
+            DM.QueryTeste.SQL.Add('INNER JOIN AREA_CONHECIMENTO AR ON AR.COD_AREA = EV.COD_AREA');
+            DM.QueryTeste.SQL.Add('INNER JOIN INSCRICOES i on i.cod_conta = f.cod_conta where i.cod_inscricao = :COD group by 1,2,3,4,5,6,7,8,10,11,12,13,14,15,16');
+            DM.QueryTeste.ParamByName('cod').AsInteger := SelectedCodInscricao;
+            DM.QueryTeste.Open;
+            //parametros que vão ser reutilizados
+            NomePart := DM.QueryTeste.FieldByName('NOME_Part').AsString;
+            NomeEv := DM.QueryTeste.FieldByName('titulo_ev').AsString;
+            Localev := dm.QueryTeste.FieldByName('local_ev').AsString;
+            NomeArea := dm.QueryTeste.FieldByName('nome_area').AsString;
+            CODCONTA := DM.QueryTeste.FieldByName('COD_CONTA_paRCELA').AsInteger;
+            CODEV := DM.QueryTeste.FieldByName('COD_EVENTO').AsInteger;
+        if Restante > 0 then
+        begin
+          // Exibe uma mensagem ao usuário e obtém a resposta
+        Resposta := MessageDlg('Parcela pendente. Deseja quitar?', mtConfirmation, [mbYes, mbNo], 0);
+
+        // Verifica a resposta do usuário
+          if Resposta = mrYes then
+           begin
+          // Continua o código
+          frmPagamentos := TfrmPagamentos.Create(Self);
+          try
+
+
+            // prencher formulário de pagamento
+            frmPagamentos.edtCodParcela.Text := DM.QueryTeste.FieldByName('cod_parcela').AsString;
+            frmPagamentos.edtCodConta.Text := IntToStr(CODCONTA);
+            frmPagamentos.edtOrdem.Text := DM.QueryTeste.FieldByName('num_parcela').AsString;
+            frmPagamentos.edtValorPar.Text := FormatFloat('#,##0.00', dm.QueryTeste.FieldByName('valor_parcela').AsFloat);
+            frmPagamentos.edtValorRestante.Text := FloatToStr(restante);
+            frmPagamentos.edtDataVenc.Text := DM.QueryTeste.FieldByName('data_venc_Parcela').AsString;
+            frmPagamentos.edtDescConta.Text := DM.QueryTeste.FieldByName('descricao_conta').AsString;
+            frmPagamentos.edtFav.Text := NomePart;
+            //abrir o frm pagamentos
+            frmPagamentos.ShowModal;
+
+          finally
+          frmPagamentos.Free;
+          DM.QueryInscricoes.Refresh;
+          end;
+
+          end;
+          end
+          else
+          begin
+             frmConfirmaPresenca := TfrmConfirmaPresenca.Create(Self);
+             try
+               frmConfirmaPresenca.lbltitulo.Caption := NomeEv;
+               frmConfirmaPresenca.lblIdInscricao.Caption := IntToStr(SelectedCodInscricao);
+               frmConfirmaPresenca.lblNomePart.Caption := NomePart;
+               frmConfirmaPresenca.lblLocal.Caption := LocalEv;
+               frmConfirmaPresenca.lblArea.Caption := NomeArea;
+               frmConfirmaPresenca.CodConta := CODCONTA;
+               frmConfirmaPresenca.CodInscricao := SelectedCodInscricao;
+               frmConfirmaPresenca.CodEv := CODEV;
+
+
+
+             //abrir tela presenças
+             frmConfirmaPresenca.ShowModal;
+             finally
+             frmConfirmaPresenca.Free;
+             end;
+          end;
+
+
+
+
+
+
+
+      end;
+  end;
+
+procedure TfrmPresencas.dbListagemCellClick(Column: TColumn);
+begin
+      SelectedCodInscricao := dbListagem.DataSource.DataSet.FieldByName('cod_inscricao').AsInteger;
+end;
+
+procedure TfrmPresencas.edtCodFavChange(Sender: TObject);
+var
+  CodFav: Integer;
+begin
+  // Verifica se o campo está vazio
+  if Trim(edtCodFav.Text) = '' then
+  begin
+    // Limpa o DBGrid
+    DM.QueryInscricoes.Close;
+    DM.QueryInscricoes.SQL.Clear;
+    // Pode exibir uma mensagem ou realizar outras ações necessárias
+    Exit;
+  end;
+
+  // Verifica se o campo contém um valor inteiro válido
+  if not TryStrToInt(edtCodFav.Text, CodFav) then
+  begin
+    ShowMessage('Digite um valor válido para o código do favorecido.');
+    // Pode exibir uma mensagem ou realizar outras ações necessárias
+    Exit;
+  end;
+
+  // Executa o SELECT somente se o valor for válido
+  DM.QueryInscricoes.SQL.Clear;
+  DM.QueryInscricoes.SQL.Add('SELECT i.cod_inscricao, i.cod_evento, ev.titulo_ev, f.valor_conta,');
+  DM.QueryInscricoes.SQL.Add('CASE f.situacao_conta WHEN ''P'' THEN ''Pendente'' WHEN ''Q'' THEN ''Quitada'' END AS Situacao,');
+  DM.QueryInscricoes.SQL.Add('SUM(f.valor_conta - p.valor_pago_parcela) AS Restante');
+  DM.QueryInscricoes.SQL.Add('FROM inscricoes i');
+  DM.QueryInscricoes.SQL.Add('JOIN eventos ev ON ev.cod_evento = i.cod_evento');
+  DM.QueryInscricoes.SQL.Add('JOIN financeiro f ON f.cod_conta = i.cod_conta');
+  DM.QueryInscricoes.SQL.Add('JOIN parcelas p ON p.cod_conta_parcela = f.cod_conta');
+  DM.QueryInscricoes.SQL.Add('WHERE i.COD_PARTICIPANTE = :cod GROUP BY 1, 2, 3, 4, 5');
+  DM.QueryInscricoes.ParamByName('COD').AsInteger := CodFav;
+
+  DM.QueryInscricoes.Open;
+end;
+
+
+end.
