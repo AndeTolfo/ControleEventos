@@ -788,6 +788,16 @@ object DM: TDM
       FieldName = 'VAGAS_EV'
       Origin = 'VAGAS_EV'
     end
+    object QueryRelEventosLOCAL_EV: TStringField
+      FieldName = 'LOCAL_EV'
+      Origin = 'LOCAL_EV'
+      Size = 200
+    end
+    object QueryRelEventosDESCRICAO_EV: TStringField
+      FieldName = 'DESCRICAO_EV'
+      Origin = 'DESCRICAO_EV'
+      Size = 250
+    end
   end
   object QueryRelMedia: TFDQuery
     Connection = conexao
@@ -1108,6 +1118,91 @@ object DM: TDM
       Origin = 'SALDO'
       Precision = 18
       Size = 2
+    end
+  end
+  object QueryRelControlPresen: TFDQuery
+    Connection = conexao
+    SQL.Strings = (
+      'SELECT'
+      '  part.cod_part,'
+      '  part.nome_part,'
+      '  ev.descricao_ev,'
+      '  ev.data_ev,'
+      '  inc.cod_inscricao,'
+      
+        '  CASE WHEN pc.data_presenca IS NOT NULL THEN '#39'Inscrito'#39' WHEN PC' +
+        '.data_presenca IS NULL AND EV.data_ev < current_date THEN '#39'Falto' +
+        'u'#39' ELSE '#39'Inscrito'#39' END AS Presenca,'
+      '  pc.data_presenca,'
+      '  f.situacao_conta,'
+      '  f.valor_conta,'
+      '  a.nome_area,'
+      '  pal.nome_pal'
+      'FROM'
+      '  inscricoes inc'
+      'LEFT JOIN presencas pc ON pc.cod_inscricao = inc.cod_inscricao'
+      'JOIN eventos ev ON ev.cod_evento = inc.cod_evento'
+      'JOIN palestrantes pal ON pal.cod_pal = ev.cod_palestrante_ev'
+      'JOIN area_conhecimento a ON a.cod_area = ev.cod_area'
+      'JOIN financeiro f ON f.cod_conta = inc.cod_conta'
+      'JOIN participantes part ON part.cod_part = inc.cod_participante;')
+    Left = 352
+    Top = 312
+    object QueryRelControlPresenCOD_PART: TIntegerField
+      FieldName = 'COD_PART'
+      Origin = 'COD_PART'
+      Required = True
+    end
+    object QueryRelControlPresenNOME_PART: TStringField
+      FieldName = 'NOME_PART'
+      Origin = 'NOME_PART'
+      Size = 200
+    end
+    object QueryRelControlPresenDESCRICAO_EV: TStringField
+      FieldName = 'DESCRICAO_EV'
+      Origin = 'DESCRICAO_EV'
+      Size = 250
+    end
+    object QueryRelControlPresenDATA_EV: TDateField
+      FieldName = 'DATA_EV'
+      Origin = 'DATA_EV'
+    end
+    object QueryRelControlPresenCOD_INSCRICAO: TIntegerField
+      FieldName = 'COD_INSCRICAO'
+      Origin = 'COD_INSCRICAO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QueryRelControlPresenDATA_PRESENCA: TSQLTimeStampField
+      FieldName = 'DATA_PRESENCA'
+      Origin = 'DATA_PRESENCA'
+    end
+    object QueryRelControlPresenSITUACAO_CONTA: TStringField
+      FieldName = 'SITUACAO_CONTA'
+      Origin = 'SITUACAO_CONTA'
+      Size = 1
+    end
+    object QueryRelControlPresenVALOR_CONTA: TFMTBCDField
+      FieldName = 'VALOR_CONTA'
+      Origin = 'VALOR_CONTA'
+      currency = True
+      Precision = 18
+      Size = 2
+    end
+    object QueryRelControlPresenNOME_AREA: TStringField
+      FieldName = 'NOME_AREA'
+      Origin = 'NOME_AREA'
+      Size = 200
+    end
+    object QueryRelControlPresenNOME_PAL: TStringField
+      FieldName = 'NOME_PAL'
+      Origin = 'NOME_PAL'
+      Size = 200
+    end
+    object QueryRelControlPresenPRESENCA: TStringField
+      FieldName = 'PRESENCA'
+      Origin = 'PRESENCA'
+      Size = 25
     end
   end
 end

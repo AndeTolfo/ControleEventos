@@ -223,7 +223,7 @@ begin
     LPorta := LIniFile.ReadInteger('Conexao','Porta', LPorta);
 
     LUser_Name := 'SUPS';
-    LPassword := 'maps3880';
+    LPassword := 'tolfogod';
 
     Conexao.Params.Values['Database'] := LDataBase;
     Conexao.Params.Values['User_Name'] := LUser_Name;

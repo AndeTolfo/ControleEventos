@@ -6,7 +6,7 @@ object DM: TDM
   object conexao: TFDConnection
     Params.Strings = (
       'User_Name=SUPS'
-      'Password=maps3880'
+      'Password=tolfogod'
       'Protocol=TCPIP'
       'Server=localhost'
       'Port=3051'
